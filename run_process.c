@@ -6,8 +6,8 @@
 
 int runProc(char **command, int param_count)
 {
-	int ret_code;
-	int pid;
+	int ret_code;	// return code 
+	int pid;	// process id 
 
 	pid = fork();
 
@@ -23,9 +23,8 @@ int runProc(char **command, int param_count)
 		ret_code = execvp(*command, command); 
 		if(ret_code != 0)
 		{
-			printf("Error executing %s.\n", *(*command));
+			printf("Error executing %s.\n", *command);
+			exit(1);
 		}
 	}
-	
-	return ret_code;
 }

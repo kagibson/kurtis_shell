@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
@@ -15,7 +16,7 @@ int main(int argc, char * argv[])
 	char *command[(int) PARAM_MAX]; // tokenized user input
 	int i, len, param_count;	
 	
-	do
+	while (1)
 	{
 		getcwd(cwd, (int) PATH_MAX);
 	
@@ -39,7 +40,6 @@ int main(int argc, char * argv[])
 		
 		// split user input up into parameters
 		param_count = tokenizeIntoArray(user_str, command, (int) PARAM_MAX, " ");
-		
 		// handle internal commands and anything else is a system call 
 		if (0 == strcmp(*(command), "cd"))
 		{
@@ -52,13 +52,19 @@ int main(int argc, char * argv[])
 			}	
 		}
 		
+		// exit loop when 'exit' is input
+		else if (0 == strcmp(*(command), "exit"))
+		{
+			exit(0);
+		}
+
 		else
 		{	
 			// fork and exec command
 			runProc(command, param_count);
 		}
 
-	} while(strcmp(user_str, "exit") != 0);
+	} 
 
 	return 0;
 }
